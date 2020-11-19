@@ -3,14 +3,23 @@ using System.IO;
 
 namespace Lab2ISRSAC
 {
-    public static class Utils
+    internal static class Utils
     {
         private static int GetBitAtPos(int num, int pos)
         {
             return (num >> pos) & 1 ;
         }
-        private static int ModularMultiplication(int A, int B, int M, int n)
+        public static int ModularMultiplication(int A, int B, int M, int n = 0)
         {
+            if (n == 0)
+            {
+                int m = M;
+                while (m != 0)
+                {
+                    m >>= 1;
+                    n++;
+                }
+            }
             int Y = 0;
             for (int j = 0; j < n; j++)
             {
@@ -29,8 +38,20 @@ namespace Lab2ISRSAC
             return Y;
         }
 
-        public static int ModularExponentiation(int A, int E, int M, int n, int h)
+        public static int ModularExponentiation(int A, int E, int M)
         {
+            int m = M, e = E;
+            int n = 0, h = 0;
+            while (m != 0)
+            {
+                m >>= 1;
+                n++;
+            }
+            while (e != 0)
+            {
+                e >>= 1;
+                h++;
+            }
             int R = (int) Math.Pow(2, n);
             int Q = R % M;
             int C = R * R % M;
@@ -60,7 +81,7 @@ namespace Lab2ISRSAC
                 return  ModularPower(a,m-2, m); 
             } 
         }
-        static int ModularPower(int x, int y, int m) 
+        private static int ModularPower(int x, int y, int m) 
         { 
             if (y == 0) 
                 return 1; 
@@ -73,6 +94,7 @@ namespace Lab2ISRSAC
             else
                 return (x * p) % m; 
         }
+
         public static int GCD(int a, int b) 
         { 
             if (a == 0) 

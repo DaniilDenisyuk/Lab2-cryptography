@@ -1,7 +1,15 @@
 namespace Lab2ISRSAC
 {
-    public class Cypherer
+    public static class Encryptor
     {
-        
+        public static int EncryptMessage(int message, KeyPair keyPair)
+        {
+            return 0;
+        }
+
+        public static int DecryptMessage(int message, KeyPair keyPair)
+        {
+            return 0;
+        }
     }
 }

@@ -3,32 +3,11 @@ using System.Runtime.CompilerServices;
 
 namespace Lab2ISRSAC
 {
-    public struct KeyPair
-    {
-        public int Exponent;
-        public int Module;
-        public KeyPair(int exponent, int module)
-        {
-            Exponent = exponent;
-            Module = module;
-        }
-    }
-    public struct ISRSACKeys
-    {
-        public KeyPair PublicKeyPair;
-        public KeyPair PrivateKeyPair;
-        public ISRSACKeys(KeyPair publicKeyPair, KeyPair privateKeyPair)
-        {
-            PrivateKeyPair = privateKeyPair;
-            PublicKeyPair = publicKeyPair;
-        }
-    }
-    
     public class ISRSAC
     {
-        public ISRSACKeys GenerateKeys(int bitSize)
+        private PrimeNumGenerator primeNumGenerator = new PrimeNumGenerator();
+        public Keys GenerateKeys(int bitSize)
         {
-            var primeNumGenerator = new PrimeNumGenerator();
             int p = primeNumGenerator.Next(bitSize/2);
             int q = primeNumGenerator.Next(bitSize/2);
             int m = p * q;
@@ -43,7 +22,7 @@ namespace Lab2ISRSAC
                 E += 1;
             }
             int D = Utils.ModInverse(E, alpha);
-            return new ISRSACKeys(new KeyPair(E,n), new KeyPair(D,m));
+            return new Keys(new KeyPair(E,n), new KeyPair(D,m));
         }
     }
 }
