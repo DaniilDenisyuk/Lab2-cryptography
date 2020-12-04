@@ -7,29 +7,29 @@ namespace Lab2ISRSAC
     {
         private TableGenerator _generator = new TableGenerator(6, 8);
 
-        public int Next(int bitSize)
+        public ulong Next(int bitSize)
         {
             return GeneratePrimalNum(bitSize);
         }
 
-        private int GeneratePrimalNum(int bitSize)
+        private ulong GeneratePrimalNum(int bitSize)
         {
             return ProbablePrime(PotentialPrimalNum(bitSize));
         }
 
-        private int PotentialPrimalNum(int bitSize)
+        private ulong PotentialPrimalNum(int bitSize)
         {
-            int primalNum = 0;
+            ulong primalNum = 0;
             for (int i = 0; i < bitSize; i++)
             {
-                primalNum |= (_generator.Next() ? 1 : 0) << i;
+                primalNum |= (ulong)((_generator.Next() ? 1 : 0) << i);
             }
 
-            primalNum |= (1 << (bitSize - 1)) | 1;
+            primalNum |= (ulong)((1 << (bitSize - 1)) | 1);
             return primalNum;
         }
 
-        private int ProbablePrime(int num)
+        private ulong ProbablePrime(ulong num)
         {
             if (!(WheelSievesTest(num, 2000) & RabinMillerTest(num, 5)))
             {
@@ -39,17 +39,28 @@ namespace Lab2ISRSAC
             return num;
         }
 
-        private bool WheelSievesTest(int num, int range)
+        private bool WheelSievesTest(ulong num, ulong range)
         {
+            if (range > num)
+            {
+                range = num;
+            }
             int[] arr = {7, 11, 13, 17, 19, 23, 29, 31};
+            foreach (ulong c in arr)
+            {
+                if (num == c)
+                {
+                    return true;
+                }
+            }
             if (num < 2 || num % 2 == 0 || num % 3 == 0 || num % 5 == 0)
             {
                 return false;
             }
-
-            for (int i = 0; i < range; i += 30)
+            
+            for (ulong i = 0; i < range; i += 30)
             {
-                foreach (int c in arr)
+                foreach (ulong c in arr)
                 {
                     if (num % (c + i) == 0)
                     {
@@ -61,12 +72,12 @@ namespace Lab2ISRSAC
             return true;
         }
 
-        private bool RabinMillerTest(int num, int k)
+        private bool RabinMillerTest(ulong num, ulong k)
         {
-            int d = num - 1;
+            ulong d = num - 1;
             while (d % 2 == 0)
                 d /= 2;
-            for (int i = 0; i < k; i++)
+            for (ulong i = 0; i < k; i++)
             {
                 if (!RabinMiller(num, d))
                 {
@@ -78,17 +89,17 @@ namespace Lab2ISRSAC
 
         }
 
-        private bool RabinMiller(int num, int d)
+        private bool RabinMiller(ulong num, ulong d)
         {
             var random = new Random();
-            int a = random.Next(2, num - 2);
+            ulong a = (ulong)random.Next((int)num-1);
 
-            int x = Utils.ModularExponentiation(a, d, num);
+            ulong x = Utils.MontgomeryExponentiation(a, d, num);
             if (x == 1 || x == num - 1)
                 return true;
             while (d != num - 1)
             {
-                x = Utils.ModularMultiplication(x, x, num);
+                x = Utils.MontgomeryMultiplication(x, x, num);
                 d *= 2;
 
                 if (x == 1)

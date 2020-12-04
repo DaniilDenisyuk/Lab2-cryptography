@@ -2,9 +2,9 @@ namespace Lab2ISRSAC
 {
     public struct KeyPair
     {
-        public int Exponent;
-        public int Module;
-        public KeyPair(int exponent, int module)
+        public ulong Exponent;
+        public ulong Module;
+        public KeyPair(ulong exponent, ulong module)
         {
             Exponent = exponent;
             Module = module;

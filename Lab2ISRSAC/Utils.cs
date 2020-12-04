@@ -5,25 +5,26 @@ namespace Lab2ISRSAC
 {
     internal static class Utils
     {
-        private static int GetBitAtPos(int num, int pos)
+        private static ulong GetBitAtPos(ulong num, int pos)
         {
             return (num >> pos) & 1 ;
         }
-        public static int ModularMultiplication(int A, int B, int M, int n = 0)
+        public static ulong MontgomeryMultiplication(ulong A, ulong B, ulong M, int n = 0)
         {
             if (n == 0)
             {
-                int m = M;
+                ulong m = M;
                 while (m != 0)
                 {
                     m >>= 1;
                     n++;
                 }
             }
-            int Y = 0;
+            ulong Y = 0;
             for (int j = 0; j < n; j++)
             {
-                Y += GetBitAtPos(B, j) * A;
+                if(GetBitAtPos(B, j) != 0)
+                Y +=  A;
                 if (GetBitAtPos(Y, 0) != 0)
                 {
                     Y += M;
@@ -37,10 +38,10 @@ namespace Lab2ISRSAC
             }
             return Y;
         }
-
-        public static int ModularExponentiation(int A, int E, int M)
+        
+        public static ulong MontgomeryExponentiation(ulong A, ulong E, ulong M)
         {
-            int m = M, e = E;
+            ulong m = M, e = E;
             int n = 0, h = 0;
             while (m != 0)
             {
@@ -52,50 +53,75 @@ namespace Lab2ISRSAC
                 e >>= 1;
                 h++;
             }
-            int R = (int) Math.Pow(2, n);
-            int Q = R % M;
-            int C = R * R % M;
-            int B = ModularMultiplication(A, C, M, n);
-            for (int j = h; j > 0; j--)
+            ulong R = (ulong ) Math.Pow(2, n);
+            ulong Q = R % M;
+            ulong C = R * R % M;
+            ulong B = MontgomeryMultiplication(A, C, M, n);
+            for (int j = h-1; j >= 0; j--)
             {
-                Q = ModularMultiplication(Q, Q, M, n);
-                if (GetBitAtPos(E, j-1) != 0)
+                Q = MontgomeryMultiplication(Q, Q, M, n);
+                if (GetBitAtPos(E, j) != 0)
                 {
-                    Q = ModularMultiplication(Q, B, M, n);
+                    Q = MontgomeryMultiplication(Q, B, M, n);
                 }
             }
 
-            Q = ModularMultiplication(Q, 1, M, n);
+            Q = MontgomeryMultiplication(Q, 1, M, n);
             return Q;
         }
-        
-        public static int ModInverse(int a, int m) 
-        { 
-            int g = GCD(a, m);
-            if (g != 1)
-            {
-                Console.Write("Inverse doesn't exist");
-                return -1;
-            }
-            else { 
-                return  ModularPower(a,m-2, m); 
-            } 
-        }
-        private static int ModularPower(int x, int y, int m) 
-        { 
-            if (y == 0) 
-                return 1; 
-        
-            int p = ModularPower(x, y / 2, m) % m; 
-            p = (p * p) % m; 
-        
-            if (y % 2 == 0) 
-                return p; 
-            else
-                return (x * p) % m; 
-        }
 
-        public static int GCD(int a, int b) 
+        public static ulong ModPow(ulong A, ulong B, ulong M)
+        {
+            ulong b = B;
+            int n = 0;
+            while (b != 0)
+            {
+                b >>= 1;
+                n++;
+            }
+            ulong c = 1;
+            ulong a ;
+            for (int e = n-1; e >= 0; e-- )
+            {
+                a = 1;
+                if (GetBitAtPos(B, e) != 0)
+                {
+                    a = A;
+                }
+                c = (c * c * a)% M;
+            }
+            return c;
+        }
+        
+        public static ulong ModInverse(ulong a, ulong m) 
+        { 
+            ulong m0 = m; 
+            ulong y = 0, x = 1; 
+  
+            if (m == 1) 
+                return 0; 
+  
+            while (a > 1) { 
+                ulong q = a / m; 
+  
+                ulong t = m; 
+  
+                m = a % m; 
+                a = t; 
+                t = y; 
+  
+                // Update x and y 
+                y = x - q * y; 
+                x = t; 
+            } 
+  
+            // Make x positive 
+            if (x < 0) 
+                x += m0; 
+  
+            return x; 
+        }
+        public static ulong GCD(ulong a, ulong b) 
         { 
             if (a == 0) 
                 return b; 
