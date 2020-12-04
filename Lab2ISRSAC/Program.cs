@@ -8,7 +8,7 @@ namespace Lab2ISRSAC
         {
           var isrsac = new ISRSAC();
           var keys = isrsac.GenerateKeys(16);
-          ulong message = 2018;
+          ulong message = 213;
           ulong encryptedMessage = Encryptor.EncryptDecryptMessage(message, keys.PublicKeyPair);
           ulong decryptedMessage = Encryptor.EncryptDecryptMessage(encryptedMessage, keys.PrivateKeyPair);
           Console.WriteLine("The message: {0}, the encrypted message: {1}, the decrypted message: {2}.\n" +

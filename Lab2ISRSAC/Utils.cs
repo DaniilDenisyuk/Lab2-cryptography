@@ -95,19 +95,19 @@ namespace Lab2ISRSAC
         
         public static ulong ModInverse(ulong a, ulong m) 
         { 
-            ulong m0 = m; 
-            ulong y = 0, x = 1; 
+            long m0 = (long)m; 
+            long y = 0, x = 1; 
   
             if (m == 1) 
                 return 0; 
   
             while (a > 1) { 
-                ulong q = a / m; 
+                long q = (long)(a / m); 
   
-                ulong t = m; 
+                long t = (long) m; 
   
                 m = a % m; 
-                a = t; 
+                a = (ulong)t; 
                 t = y; 
   
                 // Update x and y 
@@ -119,7 +119,7 @@ namespace Lab2ISRSAC
             if (x < 0) 
                 x += m0; 
   
-            return x; 
+            return (ulong)x; 
         }
         public static ulong GCD(ulong a, ulong b) 
         { 
