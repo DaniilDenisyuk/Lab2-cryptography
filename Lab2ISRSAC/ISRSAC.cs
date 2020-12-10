@@ -1,4 +1,5 @@
 using System;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 
 namespace Lab2ISRSAC
@@ -8,11 +9,11 @@ namespace Lab2ISRSAC
         private PrimeNumGenerator primeNumGenerator = new PrimeNumGenerator();
         public Keys GenerateKeys(int bitSize)
         {
-            ulong p = primeNumGenerator.Next(bitSize/4);
-            ulong q = primeNumGenerator.Next(bitSize/4);
+            ulong p = primeNumGenerator.Next(bitSize/2);
+            ulong q = primeNumGenerator.Next(bitSize/2);
             while (p==q)
             {
-                q = primeNumGenerator.Next(bitSize/4);
+                q = primeNumGenerator.Next(bitSize/2);
             }
             //ulong p = 59, q = 37, r = 3;
             ulong m = p * q;
@@ -21,7 +22,7 @@ namespace Lab2ISRSAC
             int r = random.Next(1, bitSize/4);
             ulong twoDegreeR = (ulong) Math.Pow(2, r);
             ulong alpha = (p - 1) * (q - 1) * (p - twoDegreeR) * (q - twoDegreeR) / twoDegreeR;
-            ulong E = (ulong) random.Next(2, 200);
+            ulong E = (ulong) random.Next(100, 200);
             while (Utils.GCD(E,alpha) > 1)
             {
                 E += 1;                        

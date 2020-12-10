@@ -9,11 +9,6 @@ namespace Lab2ISRSAC
 
         public ulong Next(int bitSize)
         {
-            return GeneratePrimalNum(bitSize);
-        }
-
-        private ulong GeneratePrimalNum(int bitSize)
-        {
             return ProbablePrime(PotentialPrimalNum(bitSize));
         }
 
@@ -43,7 +38,7 @@ namespace Lab2ISRSAC
         {
             if (range > num)
             {
-                range = num;
+                range = num/2;
             }
             int[] arr = {7, 11, 13, 17, 19, 23, 29, 31};
             foreach (ulong c in arr)

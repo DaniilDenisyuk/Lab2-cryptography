@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Numerics;
 
 namespace Lab2ISRSAC
 {
@@ -79,8 +80,8 @@ namespace Lab2ISRSAC
                 b >>= 1;
                 n++;
             }
-            ulong c = 1;
-            ulong a ;
+            BigInteger c = 1;
+            BigInteger a ;
             for (int e = n-1; e >= 0; e-- )
             {
                 a = 1;
@@ -90,7 +91,7 @@ namespace Lab2ISRSAC
                 }
                 c = (c * c * a)% M;
             }
-            return c;
+            return (ulong)c;
         }
         
         public static ulong ModInverse(ulong a, ulong m) 
