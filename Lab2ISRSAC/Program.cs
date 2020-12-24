@@ -11,6 +11,10 @@ namespace Lab2ISRSAC
           ulong message = 21314;
           ulong encryptedMessage = Encryptor.EncryptDecryptMessage(message, keys.PublicKeyPair);
           ulong decryptedMessage = Encryptor.EncryptDecryptMessage(encryptedMessage, keys.PrivateKeyPair);
+          if (decryptedMessage != message)
+          {
+              int a = 0;
+          }
           Console.WriteLine("The message: {0}, the encrypted message: {1}, the decrypted message: {2}.\n" +
                             " Does decrypted message = message? {3}",
               message, encryptedMessage, decryptedMessage, message == decryptedMessage);

@@ -90,7 +90,7 @@ namespace Lab2ISRSAC
                     a = A;
                 }
                 c = (c * c * a)% M;
-            }
+                }
             return (ulong)c;
         }
         
